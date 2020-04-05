@@ -11,17 +11,15 @@ m = length(y); % number of training examples
 J = 0;
 grad = zeros(size(theta));
 
-% ====================== YOUR CODE HERE ======================
-% Instructions: Compute the cost of a particular choice of theta.
-%               You should set J to the cost.
-%               Compute the partial derivatives and set grad to the partial
-%               derivatives of the cost w.r.t. each parameter in theta
+part1 = -y.*log(sigmoid(X*theta));       % y == 1 => low cost
+part2 = (1-y).*log(1-sigmoid(X*theta)); % y == 0 => high cost
 
+thetaReg = theta
+thetaReg(1) = 0 % Do not regularize theta zero
+regularization = sum(thetaReg.^2)*lambda/(2*m)
 
+J = sum(part1-part2)/m + regularization;
 
-
-
-
-% =============================================================
+grad = 1/m * X'*(sigmoid(X*theta)-y) + (thetaReg*lambda/m)
 
 end
