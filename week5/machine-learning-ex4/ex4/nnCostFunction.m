@@ -78,12 +78,12 @@ Theta2_grad = zeros(size(Theta2));
 J = 0;
 
 % Adding bias to input layer
-input_layer_bias = [ones(size(X),1) X];
-sigmoid_input_layer = sigmoid(input_layer_bias*Theta1');
+input_layer_bias = [ones(size(X),1) X]; % -> 5000x401
+sigmoid_input_layer = sigmoid(input_layer_bias*Theta1');    % 5000x401 * 401*25 -> 5000x25
 
 % Adding bias to hidden layer
-hidden_layer_bias = [ones(size(X),1) sigmoid_input_layer];
-sigmoid_hidden_layer = sigmoid(hidden_layer_bias*Theta2');
+hidden_layer_bias = [ones(size(X),1) sigmoid_input_layer];  % 5000x25+BIAS COLUMN -> 5000x26
+sigmoid_hidden_layer = sigmoid(hidden_layer_bias*Theta2');  % 5000x26 * 26x10 -> 5000x10
 
 % Compare real output with result -> 5000x10
 % For each example we generate a vector setting to 1 only the index
