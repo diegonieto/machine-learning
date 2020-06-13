@@ -94,17 +94,52 @@ yVector = repmat([1:num_labels], m, 1) == repmat(y, 1, num_labels);
 part1 = -yVector.*log(sigmoid_hidden_layer);       % y == 1 => low cost
 part2 = (1-yVector).*log(1-sigmoid_hidden_layer);  % y == 0 => high cost
 
-% Regularize without applying bias column (1)
+% Regularize without applying bias column in (1) for Thetas
 regularization = (sum(sum(Theta1(:, 2:end).^2))+sum(sum(Theta2(:, 2:end).^2)))*lambda/(2*m);
 
 J = sum(sum(part1-part2))/m + regularization;
 
 % -------------------------------------------------------------
 
+
+% Part 2 implement back propagation
+
+% propagation formula:
+% (L)delta_unit = (L)a - (i)y
+% (l)Delta(i)(j) = (l)Delta(i)(j) + (l)a(j)*(l+1)delta_unit(i)
+
+% Initialize delta to zeros
+delta1 = zeros(size(Theta1));
+delta2 = zeros(size(Theta2));
+
+% Walk through the examples applying deltas
+for example_iter = 1:m,
+	a1t_weights = input_layer_bias(example_iter,:)';
+	a2t_weights = hidden_layer_bias(example_iter,:)';
+  
+ 	sigt = sigmoid_hidden_layer(example_iter,:)';
+	yVectorT = yVector(example_iter,:)';
+  % Calculate delta unit (L)delta_unit = (L)a - (i)y
+	d3t = sigt - yVectorT;
+
+	z2t = [1; Theta1 * a1t_weights];
+  % Calculate delta unit (L)delta_unit = (L)a - (i)y
+	d2t = Theta2' * d3t .* sigmoidGradient(z2t);
+
+  % (l)Delta(i)(j) = (l)Delta(i)(j) + (l)a(j)*(l+1)delta_unit(i)
+	delta1 = delta1 + d2t(2:end) * a1t_weights';
+	delta2 = delta2 + d3t * a2t_weights';
+end;
+
+% Calculate deltas for theta
+Theta1ZeroBias = [ zeros(size(Theta1, 1), 1) Theta1(:, 2:end) ];
+Theta2ZeroBias = [ zeros(size(Theta2, 1), 1) Theta2(:, 2:end) ];
+Theta1_grad = (1 / m) * delta1 + (lambda / m) * Theta1ZeroBias;
+Theta2_grad = (1 / m) * delta2 + (lambda / m) * Theta2ZeroBias;
+
 % =========================================================================
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end
