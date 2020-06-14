@@ -114,21 +114,21 @@ delta2 = zeros(size(Theta2));
 
 % Walk through the examples applying deltas
 for example_iter = 1:m,
-	a1t_weights = input_layer_bias(example_iter,:)';
-	a2t_weights = hidden_layer_bias(example_iter,:)';
+	a1t_weights = input_layer_bias(example_iter,:)';   % 401x1
+	a2t_weights = hidden_layer_bias(example_iter,:)';  % 26x1
   
- 	sigt = sigmoid_hidden_layer(example_iter,:)';
-	yVectorT = yVector(example_iter,:)';
+ 	sigt = sigmoid_hidden_layer(example_iter,:)';      % 10x1 estimated output
+	yVectorT = yVector(example_iter,:)';               % 10x1 real output
   % Calculate delta unit (L)delta_unit = (L)a - (i)y
-	d3t = sigt - yVectorT;
+	d3t = sigt - yVectorT;                             % 10x1
 
-	z2t = [1; Theta1 * a1t_weights];
+	z2t = [1; Theta1 * a1t_weights];                   % 1 + 25x401 * 401x1 -> 26x1
   % Calculate delta unit (L)delta_unit = (L)a - (i)y
-	d2t = Theta2' * d3t .* sigmoidGradient(z2t);
+	d2t = Theta2' * d3t .* sigmoidGradient(z2t);       % 26x10 * 10x1 .* 26x1 -> 26x1 .* 26x1
 
   % (l)Delta(i)(j) = (l)Delta(i)(j) + (l)a(j)*(l+1)delta_unit(i)
-	delta1 = delta1 + d2t(2:end) * a1t_weights';
-	delta2 = delta2 + d3t * a2t_weights';
+	delta1 = delta1 + d2t(2:end) * a1t_weights';       % 25x401 + 25x1 * 1x401 -> 25x401
+	delta2 = delta2 + d3t * a2t_weights';              % 10x26  + 10x1 * 1x26 -> 10x26
 end;
 
 % Calculate deltas for theta
