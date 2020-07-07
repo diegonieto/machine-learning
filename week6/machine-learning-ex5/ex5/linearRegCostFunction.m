@@ -20,15 +20,17 @@ grad = zeros(size(theta));
 %
 
 
+J = 0;
 
+thetaInitZero = [ 0; theta(2:end) ];
 
+regularization = lambda/(2*m)*sum(thetaInitZero.^2);
 
+% Linear regression cost
+J = sum((X*theta-y).^2)/(2*m) + regularization;
 
-
-
-
-
-
+% Gradient for linear regression
+grad = 1/m .* X'*((X*theta)-y) + (thetaInitZero*lambda/m);
 
 % =========================================================================
 
