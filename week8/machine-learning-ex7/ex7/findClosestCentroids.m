@@ -22,6 +22,18 @@ idx = zeros(size(X,1), 1);
 %
 
 
+for i = 1:length(X)
+    minDist = Inf;
+    % Check distance for every centroid
+    for j = 1:K
+        dist = norm(X(i,:) - centroids(j,:)) ^ 2;
+        if dist < minDist
+            minDist = dist;
+            idx(i) = j;
+        end
+    end
+end
+
 
 
 
