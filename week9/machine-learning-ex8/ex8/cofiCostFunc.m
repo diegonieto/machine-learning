@@ -46,7 +46,8 @@ errors = ((X*Theta'-Y).*R);
 squaredErrors = errors.^2;
 J = ((1/2)*sum(squaredErrors(:)));
 
-X_grad = errors
+X_grad = errors*Theta;
+Theta_grad = errors'*X;
 
 % =============================================================
 
