@@ -42,18 +42,11 @@ Theta_grad = zeros(size(Theta));
 
 
 
+errors = ((X*Theta'-Y).*R);
+squaredErrors = errors.^2;
+J = ((1/2)*sum(squaredErrors(:)));
 
-
-
-
-
-
-
-
-
-
-
-
+X_grad = errors
 
 % =============================================================
 
