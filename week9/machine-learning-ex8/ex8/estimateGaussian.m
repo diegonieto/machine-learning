@@ -21,14 +21,21 @@ sigma2 = zeros(n, 1);
 %               should contain variance of the i-th feature.
 %
 
+%mu = mean(X)'; % vectorized way
+
+for i = 1:n
+   mu(i) = mean(X'(i,:));
+end
+
+%sigma2 = var(X, 1)'; % vectorized way
 
 
+%% var( <variable>, <normalization to use>)
 
-
-
-
-
-
+for i = 1:n
+   sigma2(i) = var(X(:,i),1);
+   sigma2(i)
+end
 
 % =============================================================
 
